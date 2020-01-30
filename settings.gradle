@@ -1,2 +1,3 @@
 rootProject.name = 'book-store'
+include 'book-store-application'
 

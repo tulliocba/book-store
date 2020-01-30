@@ -11,12 +11,16 @@ subprojects {
 	apply plugin: 'java-library'
 
 	repositories {
-		jcenter()
+		mavenCentral()
+	}
+
+	ext{
+		set("springBootVersion","2.1.9.RELEASE")
 	}
 
 	dependencyManagement {
 		imports {
-			mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.9.RELEASE")
+			mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 		}
 	}
 
