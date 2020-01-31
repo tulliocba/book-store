@@ -1,5 +1,7 @@
 package com.github.tulliocba.bookstore.store.application.port.in;
 
+import com.github.tulliocba.bookstore.store.application.service.InvalidPromotionException;
+import com.github.tulliocba.bookstore.store.application.service.ItemUnavailableException;
 import lombok.Value;
 
 import javax.validation.constraints.NotEmpty;
@@ -8,27 +10,27 @@ import java.util.Set;
 
 public interface CheckoutUseCase {
 
-    void checkout(CheckoutCommand checkoutCommand);
+    void checkout(CheckoutCommand checkoutCommand) throws ItemUnavailableException, InvalidPromotionException;
 
     @Value
     class CheckoutCommand {
 
         @NotNull
-        private final Long customerId;
+        private final String customerId;
         @NotEmpty
-        private final Set<OrderItem> items;
+        private final Set<Item> items;
 
-        private final int promotionCode;
+        private final String promotionCode;
 
     }
 
     @Value
-    class OrderItem {
+    class Item {
         @NotNull
-        private final Long itemId;
+        private final String itemId;
 
         @NotNull
-        private final Long quantity;
+        private final int quantity;
     }
 
 

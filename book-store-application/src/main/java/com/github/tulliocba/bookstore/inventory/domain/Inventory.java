@@ -1,5 +1,7 @@
 package com.github.tulliocba.bookstore.inventory.domain;
 
-public class Inventory {
+import java.util.Set;
 
+class Inventory {
+    private Set<InventoryItem> items;
 }
