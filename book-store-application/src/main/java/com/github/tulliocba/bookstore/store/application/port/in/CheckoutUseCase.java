@@ -1,4 +1,4 @@
-package com.github.tulliocba.bookstore.application.port.in;
+package com.github.tulliocba.bookstore.store.application.port.in;
 
 import lombok.Value;
 

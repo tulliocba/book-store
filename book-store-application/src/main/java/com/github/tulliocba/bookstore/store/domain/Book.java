@@ -1,4 +1,4 @@
-package com.github.tulliocba.bookstore.domain;
+package com.github.tulliocba.bookstore.store.domain;
 
 public class Book extends OrderItem {
     private String title;
