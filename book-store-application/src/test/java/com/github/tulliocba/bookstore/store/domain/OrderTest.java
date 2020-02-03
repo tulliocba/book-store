@@ -52,7 +52,7 @@ public class OrderTest {
         assertThrows(PromotionAppliedException.class, () -> {
 
             order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().minusDays(1)));
-        });
+        }, "Should not apply a expired promotion code");
     }
 
     @Test
