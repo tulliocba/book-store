@@ -3,6 +3,7 @@ package com.github.tulliocba.bookstore.store.domain;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,8 +27,12 @@ public class Order {
 
     private void performCalculationOfTotal(Set<OrderItem> orderItems) {
         for(OrderItem item : orderItems) {
-            total = total.add(item.getPrice());
+            total = total.add(getTotalByItem(item));
         }
+    }
+
+    private BigDecimal getTotalByItem(OrderItem item) {
+        return item.getPrice().multiply(new BigDecimal(item.getQuantity()));
     }
 
     public static Order withItems(Set<OrderItem> orderItems) {
@@ -39,9 +44,18 @@ public class Order {
     }
 
     public void applyPromotion(Promotion promotion) {
+
+        setPromotionCode(promotion);
+
+        if(LocalDateTime.now().isAfter(this.promotion.getExpiration())) throw new PromotionAppliedException("The promotion code is expired");
+
+        total = total.subtract(new BigDecimal(total.doubleValue() * (this.promotion.getPercentage() / Double.valueOf(100))));
+    }
+
+    private void setPromotionCode(Promotion promotion) {
         if(isPromotionAdded()) throw new PromotionAppliedException("The order has already applied a promotion code");
 
-        total = total.subtract(new BigDecimal(total.doubleValue() * (promotion.getPercentage() / 100)));
+        this.promotion = promotion;
     }
 
     @Value
