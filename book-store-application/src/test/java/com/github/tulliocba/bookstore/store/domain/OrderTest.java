@@ -2,7 +2,9 @@ package com.github.tulliocba.bookstore.store.domain;
 
 import com.github.tulliocba.bookstore.store.domain.Customer.CustomerId;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,8 +14,12 @@ import java.util.Set;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 
 public class OrderTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private Set<OrderItem> items;
 
@@ -45,18 +51,25 @@ public class OrderTest {
 
     }
 
-    @Test(expected = PromotionAppliedException.class)
+    @Test
    public void should_not_apply_expired_promotion_code() {
         final Order order = new Order(items, new CustomerId(randomUUID().toString()));
+
+        thrown.expect(InvalidPromotionCodeException.class);
+        thrown.expectMessage(is("The promotion code has expired"));
 
         order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().minusDays(1)));
     }
 
-    @Test(expected = PromotionAppliedException.class)
+    @Test
     public void should_not_apply_a_second_promotion_code() {
         final Order order = new Order(items, new CustomerId(randomUUID().toString()));
 
         order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
+
+        thrown.expect(InvalidPromotionCodeException.class);
+        thrown.expectMessage(is("The order has already applied a promotion code"));
+
         order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
     }
 }

@@ -28,7 +28,7 @@ public class CheckoutService implements CheckoutUseCase {
     final CreateOrderPort createOrderPort;
 
     @Override
-    public void checkout(final CheckoutCommand checkoutCommand) throws ItemUnavailableException, InvalidPromotionException {
+    public void checkout(final CheckoutCommand checkoutCommand) throws ItemUnavailableException, PromotionCodeNotFoundException {
 
         final Set<OrderItem> orderItems = checkoutCommand.toOrderItem();
 

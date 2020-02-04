@@ -10,9 +10,10 @@ import com.github.tulliocba.bookstore.store.domain.OrderItem;
 import com.github.tulliocba.bookstore.store.domain.OrderItem.OrderItemId;
 import com.github.tulliocba.bookstore.store.domain.Promotion;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -25,16 +26,19 @@ import java.util.Set;
 import static com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase.Item;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CheckoutService.class)
 public class CheckoutServiceTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private LoadPromotionPort loadPromotionPort;
     private CreateOrderPort createOrderPort;
@@ -62,24 +66,24 @@ public class CheckoutServiceTest {
         given(updateInventoryPort.decrementInventory(any(Set.class)))
                 .willReturn(decrementedItems);
 
-        checkoutService.checkout(command);
-
-        then(updateInventoryPort).should(times(1)).decrementInventory(decrementedItems);
-
-        then(loadPromotionPort).should(times(0))
-                .loadByCode(command.getPromotionCode());
-
         final Order mockedOrder = mock(Order.class);
 
         whenNew(Order.class)
                 .withArguments(decrementedItems, new CustomerId(command.getCustomerId()))
                 .thenReturn(mockedOrder);
 
+        checkoutService.checkout(command);
+
+        then(updateInventoryPort).should(times(1)).decrementInventory(decrementedItems);
+
+        then(loadPromotionPort).should(never())
+                .loadByCode(command.getPromotionCode());
+
         assertThat(mockedOrder).isNotNull();
 
-        then(mockedOrder).should(times(0)).applyPromotion(any(Promotion.class));
+        then(mockedOrder).should(never()).applyPromotion(any(Promotion.class));
 
-        then(createOrderPort).should(times(1)).save(any(Order.class));
+        then(createOrderPort).should(times(1)).save(mockedOrder);
     }
 
     @Test
@@ -116,6 +120,29 @@ public class CheckoutServiceTest {
         then(mockedOrder).should().applyPromotion(promotion);
 
         then(createOrderPort).should(times(1)).save(mockedOrder);
+    }
+
+    @Test
+    public void should_fail_checkout_with_limited_items() throws ItemUnavailableException, PromotionCodeNotFoundException {
+        CheckoutCommand command = new CheckoutCommand(randomUUID().toString(), items, randomUUID().toString());
+
+        final Set<OrderItem> decrementedItems = getOrderItems();
+
+        given(updateInventoryPort.decrementInventory(decrementedItems))
+                .willThrow(new ItemUnavailableException());
+
+        thrown.expect(ItemUnavailableException.class);
+        thrown.expectMessage(is("There is one or more items not available"));
+
+        checkoutService.checkout(command);
+
+        then(updateInventoryPort).should(times(1)).decrementInventory(decrementedItems);
+
+    }
+
+    @Test
+    public void should_fail_when_promotion_code_has_expired() {
+
     }
 
     private Set<OrderItem> getOrderItems() {

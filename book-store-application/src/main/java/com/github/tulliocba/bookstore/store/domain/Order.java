@@ -49,13 +49,13 @@ public class Order {
 
         setPromotionCode(promotion);
 
-        if(LocalDateTime.now().isAfter(this.promotion.getExpiration())) throw new PromotionAppliedException("The promotion code is expired");
+        if(LocalDateTime.now().isAfter(this.promotion.getExpiration())) throw new InvalidPromotionCodeException("The promotion code has expired");
 
         total = total.subtract(new BigDecimal(total.doubleValue() * (this.promotion.getPercentage() / Double.valueOf(100))));
     }
 
     private void setPromotionCode(Promotion promotion) {
-        if(isPromotionAdded()) throw new PromotionAppliedException("The order has already applied a promotion code");
+        if(isPromotionAdded()) throw new InvalidPromotionCodeException("The order has already applied a promotion code");
 
         this.promotion = promotion;
     }

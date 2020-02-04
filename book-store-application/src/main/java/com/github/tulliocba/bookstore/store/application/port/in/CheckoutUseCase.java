@@ -1,6 +1,6 @@
 package com.github.tulliocba.bookstore.store.application.port.in;
 
-import com.github.tulliocba.bookstore.store.application.service.InvalidPromotionException;
+import com.github.tulliocba.bookstore.store.application.service.PromotionCodeNotFoundException;
 import com.github.tulliocba.bookstore.store.application.service.ItemUnavailableException;
 import com.github.tulliocba.bookstore.store.domain.OrderItem;
 import lombok.Value;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public interface CheckoutUseCase {
 
-    void checkout(CheckoutCommand checkoutCommand) throws ItemUnavailableException, InvalidPromotionException;
+    void checkout(CheckoutCommand checkoutCommand) throws ItemUnavailableException, PromotionCodeNotFoundException;
 
     @Value
     class CheckoutCommand {
