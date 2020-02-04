@@ -1,5 +1,6 @@
 package com.github.tulliocba.bookstore.store.domain;
 
+import com.github.tulliocba.bookstore.store.domain.Customer.CustomerId;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -11,17 +12,21 @@ import java.util.Set;
 @ToString
 public class Order {
 
+    @Getter
     private OrderId id;
-
-    private Promotion promotion;
+    @Getter
+    private CustomerId customerId;
     @Getter
     private Set<OrderItem> orderItems;
     @Getter
     private BigDecimal total = BigDecimal.ZERO;
 
+    private Promotion promotion;
 
-    private Order(Set<OrderItem> orderItems) {
+
+    public Order(Set<OrderItem> orderItems, CustomerId customerId) {
         this.orderItems = orderItems;
+        this.customerId = customerId;
         performCalculationOfTotal(orderItems);
     }
 
@@ -35,9 +40,6 @@ public class Order {
         return item.getPrice().multiply(new BigDecimal(item.getQuantity()));
     }
 
-    public static Order withItems(Set<OrderItem> orderItems) {
-        return new Order(orderItems);
-    }
 
     public boolean isPromotionAdded() {
         return promotion != null;

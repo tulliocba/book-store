@@ -1,7 +1,8 @@
 package com.github.tulliocba.bookstore.store.domain;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.github.tulliocba.bookstore.store.domain.Customer.CustomerId;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,14 +12,13 @@ import java.util.Set;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OrderTest {
 
     private Set<OrderItem> items;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         final OrderItem orderItem1 = OrderItem.with(new OrderItem.OrderItemId(randomUUID().toString()), new BigDecimal(25), 6);
         final OrderItem orderItem2 = OrderItem.with(new OrderItem.OrderItemId(randomUUID().toString()), new BigDecimal(50), 3);
         final OrderItem orderItem3 = OrderItem.with(new OrderItem.OrderItemId(randomUUID().toString()), new BigDecimal(75), 2);
@@ -27,41 +27,36 @@ public class OrderTest {
     }
 
     @Test
-    void should_create_a_new_order_without_promotion_code() {
-        final Order order = Order.withItems(items);
+    public void should_create_a_new_order_without_promotion_code() {
+        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
 
         assertThat(order.getOrderItems().size()).isEqualTo(3);
         assertThat(order.getTotal()).isEqualTo(new BigDecimal(450));
     }
 
     @Test
-    void should_create_a_new_order_with_promotion_code() {
-        final Order order = Order.withItems(items);
+   public void should_create_a_new_order_with_promotion_code() {
+        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
 
         order.applyPromotion(new Promotion(randomUUID().toString(), 10,
-                LocalDateTime.of(2020, 02, 04, 00, 00, 00)));
+                LocalDateTime.now().plusDays(1)));
 
         assertThat(order.getTotal()).isEqualTo(new BigDecimal(405));
 
     }
 
-    @Test
-    void should_not_apply_expired_promotion_code() {
-        final Order order = Order.withItems(items);
+    @Test(expected = PromotionAppliedException.class)
+   public void should_not_apply_expired_promotion_code() {
+        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
 
-        assertThrows(PromotionAppliedException.class, () -> {
-
-            order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().minusDays(1)));
-        }, "Should not apply a expired promotion code");
+        order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().minusDays(1)));
     }
 
-    @Test
-    void should_not_apply_a_second_promotion_code() {
-        final Order order = Order.withItems(items);
+    @Test(expected = PromotionAppliedException.class)
+    public void should_not_apply_a_second_promotion_code() {
+        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
 
-        assertThrows(PromotionAppliedException.class, () -> {
-            order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
-            order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
-        }, "Should not apply a second promotion code");
+        order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
+        order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
     }
 }

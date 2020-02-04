@@ -10,6 +10,7 @@ import lombok.Value;
 public class Customer extends User {
     @Getter
     private CustomerId id;
+
     private boolean isMember;
 
     @Value
