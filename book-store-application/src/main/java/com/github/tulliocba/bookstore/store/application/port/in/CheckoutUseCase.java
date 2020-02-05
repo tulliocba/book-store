@@ -2,6 +2,9 @@ package com.github.tulliocba.bookstore.store.application.port.in;
 
 import com.github.tulliocba.bookstore.store.application.service.ItemUnavailableException;
 import com.github.tulliocba.bookstore.store.application.service.PromotionCodeNotFoundException;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +16,8 @@ public interface CheckoutUseCase {
     void checkout(CheckoutCommand checkoutCommand) throws ItemUnavailableException, PromotionCodeNotFoundException;
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     class CheckoutCommand {
 
         @NotNull
@@ -25,6 +30,8 @@ public interface CheckoutUseCase {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     class Item {
         @NotNull
         private final String itemId;
