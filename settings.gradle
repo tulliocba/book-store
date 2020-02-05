@@ -1,3 +1,4 @@
 rootProject.name = 'book-store'
 include 'book-store-application'
 include 'adapters:book-store-web'
+include 'adapters:book-store-jpa-persistence'

@@ -1,0 +1,15 @@
+dependencies {
+
+    implementation project(':book-store-application')
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    testImplementation  "junit:junit:4.12"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    testImplementation 'com.h2database:h2'
+}

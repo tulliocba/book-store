@@ -1,6 +1,6 @@
 ## Information about web layer
 
-**A Web layer in a Nutshell**
+**Web layer in a Nutshell**
 
 1. Map HTTP request to Java objects
 2. Perform authorization checks

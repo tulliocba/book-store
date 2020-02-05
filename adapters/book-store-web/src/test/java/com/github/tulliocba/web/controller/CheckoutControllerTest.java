@@ -1,6 +1,5 @@
-package com.github.tulliocba.controller;
+package com.github.tulliocba.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase;
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase.CheckoutCommand;
@@ -16,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashSet;
@@ -47,6 +47,7 @@ public class CheckoutControllerTest {
                 .content(new ObjectMapper().writeValueAsBytes(command));
 
         mockMvc.perform(requestBuilder)
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
         BDDMockito.then(checkoutUseCase).should(BDDMockito.times(1)).checkout(command);

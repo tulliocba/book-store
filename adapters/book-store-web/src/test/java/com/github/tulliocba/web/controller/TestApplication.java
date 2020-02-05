@@ -1,4 +1,4 @@
-package com.github.tulliocba.controller;
+package com.github.tulliocba.web.controller;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

@@ -1,4 +1,4 @@
-package com.github.tulliocba.controller;
+package com.github.tulliocba.web.controller;
 
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase;
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase.CheckoutCommand;
