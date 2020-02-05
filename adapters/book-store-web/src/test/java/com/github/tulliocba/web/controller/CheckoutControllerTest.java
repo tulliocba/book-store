@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase;
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase.CheckoutCommand;
 import com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase.Item;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -23,7 +21,6 @@ import java.util.HashSet;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = CheckoutController.class)
 public class CheckoutControllerTest {
 

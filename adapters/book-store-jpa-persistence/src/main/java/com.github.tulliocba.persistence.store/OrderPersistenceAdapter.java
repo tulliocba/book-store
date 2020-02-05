@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderPersistenceAdapter implements CreateOrderPort {
 
+    private final OrderRepository orderRepository;
+
     @Override
     public void save(Order order) {
-
+        OrderEntity.toEntity(order);
     }
 }
