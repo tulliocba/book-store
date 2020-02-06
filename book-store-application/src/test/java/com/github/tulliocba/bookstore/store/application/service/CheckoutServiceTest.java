@@ -68,12 +68,12 @@ public class CheckoutServiceTest {
     @Test
     public void should_succeeds_checkout_without_promotion_code() throws Exception {
 
-        CheckoutCommand command = new CheckoutCommand(randomUUID().toString(), items, null);
+        CheckoutCommand command = new CheckoutCommand(1L, items, null);
 
         final Set<InventoryItem> inventoryItems = getInventoryItems();
 
         given(loadInventoryPort.loadItemsById(mapToInventoryItemId()))
-            .willReturn(inventoryItems);
+                .willReturn(inventoryItems);
 
         final Order mockedOrder = mock(Order.class);
 
@@ -103,7 +103,7 @@ public class CheckoutServiceTest {
 
         final String promotionCode = randomUUID().toString();
 
-        CheckoutCommand command = new CheckoutCommand(randomUUID().toString(), items, promotionCode);
+        CheckoutCommand command = new CheckoutCommand(1L, items, promotionCode);
 
         final Set<InventoryItem> inventoryItems = getInventoryItems();
 
@@ -144,7 +144,7 @@ public class CheckoutServiceTest {
                 .map(item -> new Item(item.getItemId(), item.getQuantity() * 2))
                 .collect(Collectors.toSet());
 
-        CheckoutCommand command = new CheckoutCommand(randomUUID().toString(), newItems, randomUUID().toString());
+        CheckoutCommand command = new CheckoutCommand(1L, newItems, randomUUID().toString());
 
         final Set<InventoryItem> inventoryItems = getInventoryItems();
 
@@ -165,7 +165,7 @@ public class CheckoutServiceTest {
     private void thenAssertThatInventoryItemHasBeenDecremented(Set<InventoryItem> inventoryItems) {
         final Set<OrderItem> orderItems = getOrderItems();
 
-        for (InventoryItem item: inventoryItems) {
+        for (InventoryItem item : inventoryItems) {
             final OrderItem orderItem = orderItems.stream().filter(oitem -> oitem.getId().getValue().equals(item.getId().getValue()))
                     .findFirst().get();
 
@@ -200,15 +200,10 @@ public class CheckoutServiceTest {
     }
 
     private HashSet<Item> createItemsCommand() {
-
-        final String item1 = randomUUID().toString();
-        final String item2 = randomUUID().toString();
-        final String item3 = randomUUID().toString();
-
         return new HashSet<>(Arrays.asList(
-                new Item(item1, 6),
-                new Item(item2, 3),
-                new Item(item3, 2)
+                new Item(1L, 6),
+                new Item(2L, 3),
+                new Item(3L, 2)
         ));
     }
 }

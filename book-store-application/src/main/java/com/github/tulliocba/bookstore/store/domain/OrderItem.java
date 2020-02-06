@@ -41,7 +41,7 @@ public class OrderItem {
 
     @Value
     public static class OrderItemId {
-        private String value;
+        private Long value;
     }
 
 }

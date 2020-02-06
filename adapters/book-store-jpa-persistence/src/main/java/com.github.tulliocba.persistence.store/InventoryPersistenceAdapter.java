@@ -20,15 +20,14 @@ public class InventoryPersistenceAdapter implements UpdateInventoryPort, LoadInv
     @Override
     public Set<InventoryItem> loadItemsById(Set<InventoryItemId> ids) {
 
-        final Set<InventoryItemEntity> inventoryItems = inventoryItemRepository.findByUuidContains(getIds(ids));
-
+        final Set<InventoryItemEntity> inventoryItems = inventoryItemRepository.findByIdIn(getIds(ids));
         return inventoryItems.stream().map(item ->
-                new InventoryItem(new InventoryItemId(item.getUuid()),
+                new InventoryItem(new InventoryItemId(item.getId()),
                         item.getPrice(),
                         item.getStock())).collect(Collectors.toSet());
     }
 
-    private Set<String> getIds(Set<InventoryItemId> ids) {
+    private Set<Long> getIds(Set<InventoryItemId> ids) {
         return ids.stream().map(id -> id.getValue()).collect(Collectors.toSet());
     }
 
@@ -38,6 +37,8 @@ public class InventoryPersistenceAdapter implements UpdateInventoryPort, LoadInv
                 .stream()
                 .map(item -> InventoryItemEntity.toEntity(item)).collect(Collectors.toSet());
 
-        for (InventoryItemEntity item : items) inventoryItemRepository.save(item);
+        for (InventoryItemEntity item : items) {
+            inventoryItemRepository.save(item);
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.github.tulliocba.persistence.store;
 
+import com.github.tulliocba.bookstore.store.application.service.ItemUnavailableException;
 import com.github.tulliocba.bookstore.store.domain.InventoryItem;
 import com.github.tulliocba.bookstore.store.domain.InventoryItem.InventoryItemId;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,13 +22,19 @@ public class InventoryPersistenceAdapterTest {
     private InventoryPersistenceAdapter adapter;
 
     @Test
-    @Sql("InventoryPersistenceAdapterTest.sql")
-    public void updateInventory() {
+    @Sql("classpath:com.github.tulliocba.persistence.store/InventoryPersistenceAdapterTest.sql")
+    public void updateInventory() throws ItemUnavailableException {
         final Set<InventoryItem> inventoryItems = adapter.loadItemsById(
-                new HashSet<>(Arrays.asList(
-                        new InventoryItemId("3287dedf-b1b5-46a6-b285-977bd39eb3a8"))));
+                new HashSet<>(Arrays.asList(new InventoryItemId(1L))));
 
-        System.out.println(inventoryItems);
+        for (InventoryItem item: inventoryItems) item.decrementStock(2);
+
+        adapter.update(inventoryItems);
+
+        final Set<InventoryItem> itemsUpdated = adapter.loadItemsById(
+                new HashSet<>(Arrays.asList(new InventoryItemId(1L))));
+
+        for (InventoryItem item: itemsUpdated) Assertions.assertThat(item.getStock()).isEqualTo(8);
 
 
     }

@@ -21,7 +21,7 @@ public interface CheckoutUseCase {
     class CheckoutCommand {
 
         @NotNull
-        private final String customerId;
+        private final Long customerId;
         @NotEmpty
         private final Set<Item> items;
 
@@ -34,7 +34,7 @@ public interface CheckoutUseCase {
     @AllArgsConstructor
     class Item {
         @NotNull
-        private final String itemId;
+        private final Long itemId;
 
         @NotNull
         private final int quantity;

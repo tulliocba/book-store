@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.HashSet;
 
 import static java.util.Arrays.asList;
-import static java.util.UUID.randomUUID;
 
 @WebMvcTest(controllers = CheckoutController.class)
 public class CheckoutControllerTest {
@@ -33,10 +32,11 @@ public class CheckoutControllerTest {
     @Test
     public void should_succeeds_when_checkout_without_promotion_code() throws Exception {
 
-        final CheckoutCommand command = new CheckoutCommand(randomUUID().toString(),
-                new HashSet<>(asList(new Item(randomUUID().toString(), 2),
-                        new Item(randomUUID().toString(), 1),
-                        new Item(randomUUID().toString(), 2))), null);
+        final CheckoutCommand command = new CheckoutCommand(1L,
+                new HashSet<>(asList(
+                        new Item(1L, 2),
+                        new Item(2L, 1),
+                        new Item(3L, 2))), null);
 
         final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/book-store/checkout")
                 .contentType(MediaType.APPLICATION_JSON)

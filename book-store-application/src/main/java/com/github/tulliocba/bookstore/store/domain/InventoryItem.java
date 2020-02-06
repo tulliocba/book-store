@@ -27,14 +27,14 @@ public class InventoryItem {
 
     @Value
     public static class InventoryItemId {
-        public String value;
+        public Long value;
     }
 
     public InventoryItem decrementStock(int quantity) throws ItemUnavailableException {
-        if(quantity <= 0) throw new IllegalArgumentException("The quantity cannot be negative or less then one");
+        if (quantity <= 0) throw new IllegalArgumentException("The quantity cannot be negative or less then one");
 
-        if(quantity > this.stock) {
-            throw new ItemUnavailableException("The item of id: "+ this.id.getValue() +" does not have enough stock");
+        if (quantity > this.stock) {
+            throw new ItemUnavailableException("The item of id: " + this.id.getValue() + " does not have enough stock");
         }
 
         this.stock -= quantity;

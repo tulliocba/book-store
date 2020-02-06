@@ -19,16 +19,14 @@ public class InventoryItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String uuid;
-
     private BigDecimal price;
 
     private Integer stock;
 
     private Long detailId;
 
-    private InventoryItemEntity(String uuid, BigDecimal price, int stock) {
-        this.uuid = uuid;
+    private InventoryItemEntity(Long id, BigDecimal price, int stock) {
+        this.id = id;
         this.price = price;
         this.stock = stock;
     }

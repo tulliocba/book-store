@@ -55,7 +55,7 @@ public class CheckoutService implements CheckoutUseCase {
     private void applyPromotionCode(CheckoutCommand checkoutCommand,
                                     Order order) throws PromotionCodeNotFoundException {
 
-        if(!isEmpty(checkoutCommand.getPromotionCode())) {
+        if (!isEmpty(checkoutCommand.getPromotionCode())) {
             final Promotion promotion = loadPromotionPort.loadByCode(checkoutCommand.getPromotionCode());
 
             order.applyPromotion(promotion);
@@ -81,7 +81,7 @@ public class CheckoutService implements CheckoutUseCase {
 
     private Item getCommandItem(CheckoutCommand checkoutCommand, InventoryItem item) throws ItemUnavailableException {
         return checkoutCommand.getItems().stream().filter(cmdItem -> cmdItem.getItemId().equals(item.getId().getValue()))
-                .findFirst().orElseThrow(() -> new ItemUnavailableException("The item of id: "+ item.getId().getValue() +"does not found"));
+                .findFirst().orElseThrow(() -> new ItemUnavailableException("The item of id: " + item.getId().getValue() + "does not found"));
     }
 
     private OrderItem createOrderItem(InventoryItem item, Item commandItem) {

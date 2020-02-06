@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.Value;
 
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @ToString
 public class Customer extends User {
     @Getter
@@ -15,6 +15,6 @@ public class Customer extends User {
 
     @Value
     public static class CustomerId {
-        private String value;
+        private Long value;
     }
 }

@@ -25,24 +25,24 @@ public class OrderTest {
 
     @Before
     public void setUp() {
-        final OrderItem orderItem1 = OrderItem.with(new OrderItem.OrderItemId(randomUUID().toString()), new BigDecimal(25), 6);
-        final OrderItem orderItem2 = OrderItem.with(new OrderItem.OrderItemId(randomUUID().toString()), new BigDecimal(50), 3);
-        final OrderItem orderItem3 = OrderItem.with(new OrderItem.OrderItemId(randomUUID().toString()), new BigDecimal(75), 2);
+        final OrderItem orderItem1 = OrderItem.with(new OrderItem.OrderItemId(1L), new BigDecimal(25), 6);
+        final OrderItem orderItem2 = OrderItem.with(new OrderItem.OrderItemId(2L), new BigDecimal(50), 3);
+        final OrderItem orderItem3 = OrderItem.with(new OrderItem.OrderItemId(3L), new BigDecimal(75), 2);
 
         items = new HashSet<>(Arrays.asList(orderItem1, orderItem2, orderItem3));
     }
 
     @Test
     public void should_create_a_new_order_without_promotion_code() {
-        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
+        final Order order = new Order(items, new CustomerId(1L));
 
         assertThat(order.getOrderItems().size()).isEqualTo(3);
         assertThat(order.getTotal()).isEqualTo(new BigDecimal(450));
     }
 
     @Test
-   public void should_create_a_new_order_with_promotion_code() {
-        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
+    public void should_create_a_new_order_with_promotion_code() {
+        final Order order = new Order(items, new CustomerId(1L));
 
         order.applyPromotion(new Promotion(randomUUID().toString(), 10,
                 LocalDateTime.now().plusDays(1)));
@@ -52,8 +52,8 @@ public class OrderTest {
     }
 
     @Test
-   public void should_not_apply_expired_promotion_code() {
-        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
+    public void should_not_apply_expired_promotion_code() {
+        final Order order = new Order(items, new CustomerId(1L));
 
         thrown.expect(InvalidPromotionCodeException.class);
         thrown.expectMessage(is("The promotion code has expired"));
@@ -63,7 +63,7 @@ public class OrderTest {
 
     @Test
     public void should_not_apply_a_second_promotion_code() {
-        final Order order = new Order(items, new CustomerId(randomUUID().toString()));
+        final Order order = new Order(items, new CustomerId(1L));
 
         order.applyPromotion(new Promotion(randomUUID().toString(), 10, LocalDateTime.now().plusDays(1)));
 

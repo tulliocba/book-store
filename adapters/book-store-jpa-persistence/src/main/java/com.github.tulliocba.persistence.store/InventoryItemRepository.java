@@ -6,5 +6,5 @@ import java.util.Set;
 
 public interface InventoryItemRepository extends JpaRepository<InventoryItemEntity, Long> {
 
-    Set<InventoryItemEntity> findByUuidContains(Set<String> uuidSet);
+    Set<InventoryItemEntity> findByIdIn(Set<Long> uuid);
 }

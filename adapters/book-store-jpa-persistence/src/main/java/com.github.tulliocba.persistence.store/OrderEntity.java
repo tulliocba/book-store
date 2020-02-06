@@ -1,6 +1,5 @@
 package com.github.tulliocba.persistence.store;
 
-import com.github.tulliocba.bookstore.store.domain.InventoryItem;
 import com.github.tulliocba.bookstore.store.domain.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
