@@ -5,22 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "promotion")
+@Table(name = "order_item")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PromotionEntity {
+@AllArgsConstructor
+public class OrderItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String code;
-
-    private Integer percentage;
-
-    private LocalDateTime expiration;
 }

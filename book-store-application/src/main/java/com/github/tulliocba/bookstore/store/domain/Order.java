@@ -20,7 +20,7 @@ public class Order {
     private Set<OrderItem> orderItems;
     @Getter
     private BigDecimal total = BigDecimal.ZERO;
-
+    @Getter
     private Promotion promotion;
 
 
@@ -64,6 +64,6 @@ public class Order {
 
     @Value
     public static class OrderId {
-        private String value;
+        private Long value;
     }
 }

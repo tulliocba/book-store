@@ -5,14 +5,14 @@ import com.github.tulliocba.bookstore.store.application.port.out.UpdateInventory
 import com.github.tulliocba.bookstore.store.domain.InventoryItem;
 import com.github.tulliocba.bookstore.store.domain.InventoryItem.InventoryItemId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
-@Component
+@Repository
 public class InventoryPersistenceAdapter implements UpdateInventoryPort, LoadInventoryPort {
 
     private final InventoryItemRepository inventoryItemRepository;

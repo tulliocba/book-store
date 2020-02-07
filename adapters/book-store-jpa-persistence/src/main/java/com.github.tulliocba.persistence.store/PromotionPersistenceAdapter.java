@@ -4,14 +4,18 @@ import com.github.tulliocba.bookstore.store.application.port.out.LoadPromotionPo
 import com.github.tulliocba.bookstore.store.application.service.PromotionCodeNotFoundException;
 import com.github.tulliocba.bookstore.store.domain.Promotion;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
-@Component
+@Repository
 public class PromotionPersistenceAdapter implements LoadPromotionPort {
+
+    private final PromotionRepository promotionRepository;
 
     @Override
     public Promotion loadByCode(String code) throws PromotionCodeNotFoundException {
-        return null;
+        return promotionRepository.findByCode(code)
+                .orElseThrow(() ->
+                        new PromotionCodeNotFoundException("Promotion with code "+ code+ "does not found"));
     }
 }

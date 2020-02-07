@@ -38,6 +38,7 @@ public class OrderEntity {
     private PromotionEntity promotion;
 
     public static OrderEntity toEntity(Order order) {
+        // TODO
         return null;
     }
 }
