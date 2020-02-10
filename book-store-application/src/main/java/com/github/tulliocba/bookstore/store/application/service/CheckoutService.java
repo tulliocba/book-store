@@ -26,13 +26,13 @@ import static org.springframework.util.StringUtils.isEmpty;
 @RequiredArgsConstructor
 public class CheckoutService implements CheckoutUseCase {
 
-    final UpdateInventoryPort updateInventoryPort;
+    private final UpdateInventoryPort updateInventoryPort;
 
-    final LoadPromotionPort loadPromotionPort;
+    private final LoadPromotionPort loadPromotionPort;
 
-    final CreateOrderPort createOrderPort;
+    private final CreateOrderPort createOrderPort;
 
-    final LoadInventoryPort loadInventoryPort;
+    private final LoadInventoryPort loadInventoryPort;
 
     @Override
     public void checkout(final CheckoutCommand checkoutCommand)
