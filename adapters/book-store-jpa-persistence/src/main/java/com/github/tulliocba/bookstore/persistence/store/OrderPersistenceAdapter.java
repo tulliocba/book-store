@@ -1,6 +1,7 @@
 package com.github.tulliocba.bookstore.persistence.store;
 
 import com.github.tulliocba.bookstore.store.application.port.out.CreateOrderPort;
+import com.github.tulliocba.bookstore.store.application.port.out.LoadOrderPort;
 import com.github.tulliocba.bookstore.store.domain.Customer;
 import com.github.tulliocba.bookstore.store.domain.Customer.CustomerId;
 import com.github.tulliocba.bookstore.store.domain.Order;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
-public class OrderPersistenceAdapter implements CreateOrderPort {
+public class OrderPersistenceAdapter implements CreateOrderPort, LoadOrderPort {
 
     private final OrderRepository orderRepository;
 
@@ -35,6 +36,7 @@ public class OrderPersistenceAdapter implements CreateOrderPort {
         final OrderEntity savedOrder = orderRepository.save(new OrderEntity(order, promotion, customer));
     }
 
+    @Override
     public Order loadById(Long id) {
         final Optional<OrderEntity> optionalOrder = orderRepository.findById(id);
 
