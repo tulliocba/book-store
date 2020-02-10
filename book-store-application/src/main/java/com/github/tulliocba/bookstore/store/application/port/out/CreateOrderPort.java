@@ -6,5 +6,5 @@ public interface CreateOrderPort {
 
     void save(Order order);
 
-    Long loadById(Long id);
+    Order loadById(Long id);
 }

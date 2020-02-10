@@ -17,7 +17,7 @@ public class PromotionPersistenceAdapterTest {
     private PromotionPersistenceAdapter adapter;
 
     @Test
-    @Sql("classpath:com/github/tulliocba/bookstore/persistence/store/PromotionPersistenceAdapterTest.sql")
+    @Sql("CreatePromotion.sql")
     void should_load_promotion_by_code() throws PromotionCodeNotFoundException {
         final String code_test = "CODE_TEST";
         final Promotion promotion = adapter.loadByCode(code_test);

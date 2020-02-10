@@ -30,6 +30,14 @@ public class Order {
         performCalculationOfTotal(orderItems);
     }
 
+    public Order(OrderId id, CustomerId customerId, Set<OrderItem> orderItems, BigDecimal total, Promotion promotion) {
+        this.id = id;
+        this.customerId = customerId;
+        this.orderItems = orderItems;
+        this.total = total;
+        this.promotion = promotion;
+    }
+
     private void performCalculationOfTotal(Set<OrderItem> orderItems) {
         for (OrderItem item : orderItems) {
             total = total.add(getTotalByItem(item));

@@ -14,8 +14,9 @@ public class PromotionPersistenceAdapter implements LoadPromotionPort {
 
     @Override
     public Promotion loadByCode(String code) throws PromotionCodeNotFoundException {
-        return promotionRepository.findByCode(code)
+        final PromotionEntity promotionEntity = promotionRepository.findByCode(code)
                 .orElseThrow(() ->
-                        new PromotionCodeNotFoundException("Promotion with code "+ code+ "does not found"));
+                        new PromotionCodeNotFoundException("Promotion with code " + code + "does not found"));
+        return new Promotion(promotionEntity.getCode(), promotionEntity.getPercentage(), promotionEntity.getExpiration());
     }
 }

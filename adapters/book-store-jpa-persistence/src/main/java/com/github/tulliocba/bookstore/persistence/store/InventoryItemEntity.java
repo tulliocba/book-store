@@ -3,6 +3,7 @@ package com.github.tulliocba.bookstore.persistence.store;
 import com.github.tulliocba.bookstore.store.domain.InventoryItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,10 +14,11 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class InventoryItemEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private BigDecimal price;
@@ -29,6 +31,10 @@ public class InventoryItemEntity {
         this.id = id;
         this.price = price;
         this.stock = stock;
+    }
+
+    public InventoryItemEntity(Long id) {
+        this.id = id;
     }
 
     public static InventoryItemEntity toEntity(InventoryItem item) {

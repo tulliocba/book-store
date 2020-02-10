@@ -23,7 +23,7 @@ public class InventoryPersistenceAdapterTest {
     private InventoryPersistenceAdapter adapter;
 
     @Test
-    @Sql("classpath:com/github/tulliocba/bookstore/persistence/store/InventoryPersistenceAdapterTest.sql")
+    @Sql("CreateInventory.sql")
     public void should_update_inventory_item() throws ItemUnavailableException {
         final Set<InventoryItem> inventoryItems = adapter.loadItemsById(
                 new HashSet<>(Arrays.asList(new InventoryItemId(1L))));
@@ -39,7 +39,7 @@ public class InventoryPersistenceAdapterTest {
     }
 
     @Test
-    @Sql("classpath:com/github/tulliocba/bookstore/persistence/store/InventoryPersistenceAdapterTest.sql")
+    @Sql("CreateInventory.sql")
     void should_load_inventory_item_by_id() {
         final Set<InventoryItem> inventoryItems = adapter
                 .loadItemsById(new HashSet<>(Arrays.asList(new InventoryItemId(1L))));
