@@ -13,9 +13,7 @@ import com.github.tulliocba.bookstore.store.domain.OrderItem;
 import com.github.tulliocba.bookstore.store.domain.OrderItem.OrderItemId;
 import com.github.tulliocba.bookstore.store.domain.Promotion;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -30,6 +28,7 @@ import java.util.stream.Collectors;
 import static com.github.tulliocba.bookstore.store.application.port.in.CheckoutUseCase.Item;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -39,9 +38,6 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CheckoutService.class)
 public class CheckoutServiceTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     private LoadPromotionPort loadPromotionPort;
     private CreateOrderPort createOrderPort;
@@ -137,8 +133,7 @@ public class CheckoutServiceTest {
     }
 
     @Test
-    public void should_fail_checkout_with_unavailable_items()
-            throws ItemUnavailableException, PromotionCodeNotFoundException {
+    public void should_fail_checkout_with_unavailable_items() {
 
         final Set<Item> newItems = this.items.stream()
                 .map(item -> new Item(item.getItemId(), item.getQuantity() * 2))
@@ -152,9 +147,7 @@ public class CheckoutServiceTest {
                 .willReturn(inventoryItems);
 
 
-        thrown.expect(ItemUnavailableException.class);
-
-        checkoutService.checkout(command);
+        assertThrows(ItemUnavailableException.class, () -> checkoutService.checkout(command));
 
         then(updateInventoryPort).should(never()).update(inventoryItems);
 

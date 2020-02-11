@@ -3,24 +3,20 @@ package com.github.tulliocba.bookstore.store.domain;
 import com.github.tulliocba.bookstore.store.application.service.ItemUnavailableException;
 import com.github.tulliocba.bookstore.store.domain.InventoryItem.InventoryItemId;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class InventoryItemTest {
 
     private Set<InventoryItem> items;
 
     private static int DEFAULT_STOCK = 3;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -39,18 +35,16 @@ public class InventoryItemTest {
     }
 
     @Test
-    public void should_fail_when_quantity_is_negative() throws ItemUnavailableException {
+    public void should_fail_when_quantity_is_negative() {
         for (InventoryItem item : items) {
-            thrown.expect(IllegalArgumentException.class);
-            item.decrementStock(-1);
+            assertThrows(IllegalArgumentException.class, () -> item.decrementStock(-1));
         }
     }
 
     @Test
     public void should_fail_when_quantity_is_greater_than_the_available_stock() throws ItemUnavailableException {
         for (InventoryItem item : items) {
-            thrown.expect(ItemUnavailableException.class);
-            item.decrementStock(5);
+            assertThrows(ItemUnavailableException.class, () -> item.decrementStock(5));
         }
     }
 }
